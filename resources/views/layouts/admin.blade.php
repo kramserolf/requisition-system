@@ -158,9 +158,14 @@
                     @yield('content')
                 </div>
             </main>
-            {{-- <footer class="row bg-light py-4 mt-auto">
-                <div class="col"> Footer content here... </div>
-            </footer> --}}
+            <footer class="row bg-light mt-auto">
+                <div class="text-center">
+                    <span class="text-muted">
+                        &copy; {{ \Carbon\Carbon::now()->year }} SJBCI.
+                        All Rights Reserved
+                      </span>
+                </div>
+            </footer>
         </div>
     </div>
 </div>
