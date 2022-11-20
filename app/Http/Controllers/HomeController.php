@@ -27,6 +27,37 @@ class HomeController extends Controller
         return view('request-form', compact('inventory'));
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'inventory_id' => 'required',
+            'quantity' => 'required',
+            'department' => 'required',
+            'name' => 'required|string|min:6',
+        ]);
+
+        $tracking_no = 'SJCBI-00'.rand(0, 999999);
+
+
+        $items = explode(',', $request->hidden_item);
+        
+        $quantity = explode(',', $request->quantity);
+      
+        for($i = 0; $i < count($items, (int)$quantity); $i++){
+            $requisition[] = [
+                'inventory_id' => $items[$i],
+                'quantity' => $quantity[$i],
+                'department' => $request->department,
+                'name' => $request->name,
+                'status_no' => $tracking_no
+            ];
+        }
+
+        $requisition = Requisition::insert($requisition);
+
+        return response()->json(['tracking' => $tracking_no, 'message' => $requisition]);
+    }
+
     public function trackStatus(Request $request)
     {
         $request->validate([

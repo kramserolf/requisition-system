@@ -28,6 +28,8 @@ Route::get('tracking', function(){
     return view('tracking');
 });
 
+Route::post('requisition/store', [HomeController::class, 'store'])->name('store-requisition');
+
 Route::get('tracking/status', [HomeController::class, 'trackStatus']);
 
 Route::group(['prefix' => 'admin'], function(){
@@ -39,7 +41,6 @@ Route::group(['prefix' => 'admin'], function(){
 
     // requisitons
     Route::get('requisition', [RequisitionController::class, 'index'])->name('admin.requisition');
-    Route::post('requisition/store', [RequisitionController::class, 'store'])->name('admin.store-requisition');
     Route::post('requisition/update', [RequisitionController::class, 'update'])->name('admin.update-requisition');
 });
 

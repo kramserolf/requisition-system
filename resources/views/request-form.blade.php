@@ -78,7 +78,7 @@
     e.preventDefault();
     $.ajax({
         data: $('#requestForm').serialize(),
-        url : "{{ route('admin.store-requisition') }}",
+        url : "{{ route('store-requisition') }}",
         type: "POST",
         dataType: "json",
             success: function (data) {
