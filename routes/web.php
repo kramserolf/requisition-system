@@ -32,7 +32,7 @@ Route::post('requisition/store', [HomeController::class, 'store'])->name('store-
 
 Route::get('tracking/status', [HomeController::class, 'trackStatus']);
 
-Route::group(['prefix' => 'admin'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function(){
     Route::get('home', [AdminController::class, 'index'])->name('admin.home');
     // inventories
     Route::get('inventory', [InventoryController::class, 'index'])->name('admin.inventory');

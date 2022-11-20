@@ -7,13 +7,12 @@
 @section('content')
 <h4 class="text-center px-2 fw-bold text-secondary"> Inventory</h4>
 
-<table class="table table-bordered data-table nowrap" style="width: 100%;">
+<table class="table table-sm table-bordered data-table nowrap" style="width: 100%;">
     <thead>
         <tr class="table-primary text-uppercase">
             <td class="text-center">No.</td>
             <td class="text-center">Item Name</td>
             <td class="text-center">Quantity</td>
-            <td class="text-center">Unit</td>
             <td class="text-center">Name</td>
             <td class="text-center">Deparment</td>
             <td class="text-center">Status</td>
@@ -49,10 +48,9 @@ $(document).ready(function(){
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'item_name', name: 'item_name'},
             {data: 'quantity', name: 'quantity'},
-            {data: 'quantity_type', name: 'quantity_type'},
              {data: 'name', name: 'name'},
              {data: 'department', name: 'department'},
-             {data: 'status', name: 'status', class: 'text-center'},
+             {data: 'approval_status', name: 'approval_status', class: 'text-center'},
             {data: 'action', name: 'action', orderable: false, searchable: false, class:'text-center'},
         ],
         dom: 'Bfrtip',
@@ -69,15 +67,15 @@ $(document).ready(function(){
                 },
             }
         ],
-        columnDefs: [ 
-          {
-            'targets': 6,
-            'render': function(data, type, row){
-              return data +', '+row.recommending_status+', ' +row.approval_status;
-            },
-            'targets': 6
-          }
-        ]
+        // columnDefs: [ 
+        //   {
+        //     'targets': 5,
+        //     'render': function(data, type, row){
+        //       return data +', '+row.recommending_status+', ' +row.approval_status;
+        //     },
+        //     'targets': 5
+        //   }
+        // ]
 
     });
 

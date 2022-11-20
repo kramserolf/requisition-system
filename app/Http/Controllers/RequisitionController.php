@@ -27,7 +27,7 @@ class RequisitionController extends Controller
         if($request->ajax()){
             $requisition = DB::table('requisitions as r')
                                 ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
-                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.quantity_type', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status')
+                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status')
                                 ->get();
             return DataTables::of($requisition)
                     ->addIndexColumn()
