@@ -24,44 +24,44 @@
 
 {{-- add modal --}}
 <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <form name="inventoryForm" id="inventoryForm" enctype="multipart/form-data">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <form name="inventoryForm" id="inventoryForm" enctype="multipart/form-data">
 
-        <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">New Item</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-             <input type="hidden" name="id" id="id">
-              <div class="mb-3">
-                <label for="item_name" class="form-label fw-bold">Item Name:</label>
-                <input type="text" class="form-control form-control-sm" name="item_name" id="item_name" placeholder="e.g. Bondpaper, Ballpen">
-              </div>
-              <div class="mb-3">
-                <label for="description" class="form-label fw-bold">Description:</label>
-                <input type="text" class="form-control form-control-sm" name="description" id="description" placeholder="e.g. Received 20 boxes">
-             </div>
-             <div class="mb-3">
-                <label for="quantity" class="form-label fw-bold">Quantity:</label>
-                <input type="text" class="form-control form-control-sm text" name="quantity" id="quantity" placeholder="e.g. 20">
-             </div>
-             <div class="mb-3">
-                <label for="quantity_type" class="form-label fw-bold">Unit:</label>
-                <input type="text" class="form-control form-control-sm" name="quantity_type" id="quantity_type" placeholder="e.g. pcs / box / rim">
-             </div>
-             <div class="mb-3">
-                <label for="date_acquired" class="form-label fw-bold">Date Received:</label>
-                <input type="date" class="form-control form-control-sm" name="date_acquired" id="date_acquired">
-             </div>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-outline-primary" name="savedata" id="savedata" >Save</button>
-              <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
-          </div> 
-    </form>
-  </div>
-</div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">New Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id" id="id">
+                <div class="mb-3">
+                    <label for="item_name" class="form-label fw-bold">Item Name:</label>
+                    <input type="text" class="form-control form-control-sm" name="item_name" id="item_name" placeholder="e.g. Bondpaper, Ballpen">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-bold">Description:</label>
+                    <input type="text" class="form-control form-control-sm" name="description" id="description" placeholder="e.g. Received 20 boxes">
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label fw-bold">Quantity:</label>
+                    <input type="text" class="form-control form-control-sm text" name="quantity" id="quantity" placeholder="e.g. 20">
+                </div>
+                <div class="mb-3">
+                    <label for="quantity_type" class="form-label fw-bold">Unit:</label>
+                    <input type="text" class="form-control form-control-sm" name="quantity_type" id="quantity_type" placeholder="e.g. pcs / box / rim">
+                </div>
+                <div class="mb-3">
+                    <label for="date_acquired" class="form-label fw-bold">Date Received:</label>
+                    <input type="date" class="form-control form-control-sm" name="date_acquired" id="date_acquired">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" name="savedata" id="savedata" >Save</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+            </div> 
+        </form>
+    </div>
+    </div>
 </div>
 
 

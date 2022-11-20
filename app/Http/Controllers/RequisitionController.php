@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Requisition;
+use App\Models\Tracking;
 use Illuminate\Support\Facades\DB;
 use DataTables;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class RequisitionController extends Controller
 {
@@ -29,8 +32,12 @@ class RequisitionController extends Controller
             return DataTables::of($requisition)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
-                        $btn = '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-success btn-sm approveRequisition"><i class="bi-check-lg"></i> </a> ';
-                        $btn .= '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-danger btn-sm deleteRequisition"><i class="bi-trash"></i> </a>';
+                        $btn = '                       <select class="form-select form-select-sm" aria-label="Default select example" name="search_by" id="search_by">
+                        <option selected>Select action</option>
+                        <option value="country">View Status</option>
+                        <option value="name">Name</option>
+                        </select>';
+                        // $btn .= '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-danger btn-sm deleteRequisition"><i class="bi-trash"></i> </a>';
                         return $btn;
                     })
                     ->rawColumns(['action'])
@@ -62,21 +69,31 @@ class RequisitionController extends Controller
     {
         $request->validate([
             'inventory_id' => 'required',
-            'quantity' => 'required|numeric',
-            'quantity_type' => 'required',
+            'quantity' => 'required',
             'department' => 'required',
             'name' => 'required|string|min:6',
         ]);
 
-        $requisition = Requisition::create([
-            'inventory_id' => $request->inventory_id,
-            'quantity' => $request->quantity,
-            'quantity_type' => $request->quantity_type,
-            'department' => $request->department,
-            'name' => $request->name,
-        ]);
+        $tracking_no = 'SJCBI-00'.rand(0, 999999);
+
+
+        $items = explode(',', $request->hidden_item);
         
-        return response()->json(['success'=> 'Requisition added successfully.']);
+        $quantity = explode(',', $request->quantity);
+      
+        for($i = 0; $i < count($items, (int)$quantity); $i++){
+            $requisition[] = [
+                'inventory_id' => $items[$i],
+                'quantity' => $quantity[$i],
+                'department' => $request->department,
+                'name' => $request->name,
+                'status_no' => $tracking_no
+            ];
+        }
+
+        $requisition = Requisition::insert($requisition);
+
+        return response()->json(['tracking' => $tracking_no, 'message' => $requisition]);
     }
 
     /**
@@ -127,4 +144,39 @@ class RequisitionController extends Controller
     {
         
     }
+
+    public function trackStatus(Request $request)
+    {
+        $request->validate([
+            'tracking' => 'required'
+        ]);
+
+        $trackingStatus = DB::table('requisitions')
+                            ->where('status_no', $request->tracking)
+                            ->exists();
+        if($trackingStatus){
+            $trackingObject = DB::table('requisitions as r')
+                            ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
+                            ->select('r.*', 'i.item_name')
+                            ->where('status_no', $request->tracking)
+                            ->get();
+            $tracking = $trackingObject->toArray();
+            return response()->json(['message' => $tracking, 'status' => true]);
+        } else{
+            
+            return response()->json(['message' => $trackingStatus, 'status' => false]);
+        }
+
+    }
+
+    // public function getUnit(Request $request)
+    // {
+    //     if($request->ajax()){
+    //         $unit = DB::table('inventories')
+    //                     ->where('id', $request->inventory_id)
+    //                     ->first();
+    //         $getunit = $unit->quantity_type;
+    //         return response($getunit);
+    //     }
+    // }
 }

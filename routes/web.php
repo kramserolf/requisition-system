@@ -19,10 +19,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('request-form', [HomeController::class, 'request_form'])->name('request.form');
+// tracking
+Route::get('tracking', function(){
+    return view('tracking');
+});
+
+Route::get('tracking/status', [RequisitionController::class, 'trackStatus']);
 
 Route::group(['prefix' => 'admin'], function(){
     Route::get('home', [AdminController::class, 'index'])->name('admin.home');
@@ -37,4 +43,8 @@ Route::group(['prefix' => 'admin'], function(){
     Route::post('requisition/update', [RequisitionController::class, 'update'])->name('admin.update-requisition');
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'reset' => false, 
+    'verify' => false, 
+]);

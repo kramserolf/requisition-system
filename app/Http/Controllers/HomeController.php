@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Inventory;
 use App\Models\Requisition;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 class HomeController extends Controller
 {
     /**
@@ -21,6 +22,7 @@ class HomeController extends Controller
     public function request_form()
     {
         $inventory = Inventory::get();
+
         return view('request-form', compact('inventory'));
     }
 }

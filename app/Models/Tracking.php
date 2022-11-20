@@ -5,18 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Requisition extends Model
+class Tracking extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'requisition_id',
-        'inventory_id',
-        'name',
-        'quantity',
-        'department',
-        'status',
-        'recommending_status',
-        'approval_status'
+        'status_no',
+        'status'
     ];
 }

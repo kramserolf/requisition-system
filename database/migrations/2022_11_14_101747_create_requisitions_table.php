@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('requisitions', function (Blueprint $table) {
             $table->id();
-            $table->smallInteger('inventory_id');
+            $table->string('inventory_id');
             $table->string('name');
-            $table->smallInteger('quantity');
-            $table->string('quantity_type');
+            $table->string('quantity');
             $table->string('department');
-            $table->string('status')->default('pending');
+            $table->String('status_no');
+            $table->string('status')->nullable();
             $table->string('recommending_status')->default('pending');
             $table->string('approval_status')->default('pending');
             $table->timestamps();
