@@ -12,7 +12,7 @@
                 <form name="trackingForm" id="trackingForm" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="care_of" class="form-label fw-bold">Requisition No:</label>
-                        <input type="text" class="form-control form-control-sm" name="tracking" id="tracking" placeholder="e.g. SJCBI-0023145">
+                        <input type="text" class="form-control" name="tracking" id="tracking" placeholder="e.g. SJCBI-0023145">
                     </div>
                     <div class="text-center">
                         <button type="button" class="btn btn-success btn-sm" name="savedata" id="savedata">Submit</button>
