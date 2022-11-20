@@ -26,7 +26,7 @@ Route::get('request-form', [HomeController::class, 'request_form'])->name('reque
 // tracking
 Route::get('tracking', function(){
     return view('tracking');
-});
+})->name('tracking');
 
 Route::post('requisition/store', [HomeController::class, 'store'])->name('store-requisition');
 

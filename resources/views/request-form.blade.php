@@ -55,7 +55,7 @@
                     </div>
                     <div class="text-center">
                         <button type="button" class="btn btn-success btn-sm" name="savedata" id="savedata">Request</button>
-                        <span style="font-size: 13px">Click <a href="">here</a> for status inquiry. </span>
+                        <span style="font-size: 13px">Click <a href="{{ route('tracking') }}">here</a> for status inquiry. </span>
                     </div>
                 </form>
             </div>
