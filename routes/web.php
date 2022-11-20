@@ -28,7 +28,7 @@ Route::get('tracking', function(){
     return view('tracking');
 });
 
-Route::get('tracking/status', [RequisitionController::class, 'trackStatus']);
+Route::get('tracking/status', [HomeController::class, 'trackStatus']);
 
 Route::group(['prefix' => 'admin'], function(){
     Route::get('home', [AdminController::class, 'index'])->name('admin.home');
