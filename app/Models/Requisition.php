@@ -16,6 +16,7 @@ class Requisition extends Model
         'quantity',
         'department',
         'status',
+        'release_date',
         'recommending_status',
         'approval_status'
     ];

@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('quantity');
             $table->string('department');
-            $table->String('status_no');
+            $table->string('status_no');
+            $table->string('released_date')->nullable();
             $table->string('status')->nullable();
             $table->string('recommending_status')->default('pending');
             $table->string('approval_status')->default('pending');

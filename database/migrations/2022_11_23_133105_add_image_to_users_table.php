@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->smallInteger('user_id');
-            $table->string('role_type');
-            $table->string('position');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('image')->nullable();
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accounts');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Requisition;
-use App\Models\Tracking;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 class RequisitionController extends Controller
 {
@@ -27,17 +25,13 @@ class RequisitionController extends Controller
         if($request->ajax()){
             $requisition = DB::table('requisitions as r')
                                 ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
-                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status')
+                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status', 'r.status_no')
                                 ->get();
             return DataTables::of($requisition)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
-                        $btn = '                       <select class="form-select form-select-sm" aria-label="Default select example" name="search_by" id="search_by">
-                        <option selected>Select action</option>
-                        <option value="country">View Status</option>
-                        <option value="name">Name</option>
-                        </select>';
-                        // $btn .= '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-danger btn-sm deleteRequisition"><i class="bi-trash"></i> </a>';
+                        $btn = '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-secondary btn-sm viewRequisition"><i class="bi-eye"></i> </a> ';
+                        $btn .= '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-danger btn-sm deleteRequisition"><i class="bi-trash"></i> </a>';
                         return $btn;
                     })
                     ->rawColumns(['action'])
@@ -47,6 +41,7 @@ class RequisitionController extends Controller
         return view('admin.requisition', [
             'requisition' => $requisition
         ]);
+
     }
 
     /**
@@ -101,11 +96,62 @@ class RequisitionController extends Controller
      */
     public function update(Request $request)
     {
-        $requisition = Requisition::where('id', $request->id)
-                        ->first();
-        $requisition->status = 'approved';
-        $requisition->save();
-        return response()->json(['success' => 'Updated successfully']);
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        if($request->ajax()){
+            if($request->status == 'released'){
+                DB::table('requisitions as r')
+                    ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
+                    ->where('r.id', $request->id)
+                    ->update([
+                        'released_date' => Carbon::now()->toDateString(),
+                        'i.quantity' => DB::raw('i.quantity - r.quantity')
+                    ]);
+                return response()->json(['success' => 'Updated Successfully']);
+            } else{
+                DB::table('requisitions')
+                        ->where('id', $request->id)
+                        ->update(['status' => $request->status]);
+                return response()->json(['success' => 'Updated Successfully']);
+            }
+
+        }
+
+    }
+
+    public function vpUpdate(Request $request)
+    {
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        if($request->ajax()){
+            DB::table('requisitions')
+                        ->where('id', $request->id)
+                        ->update(['recommending_status' => $request->status]);
+            return response()->json(['success' => 'Updated Successfully']);
+        }
+
+    }
+
+    
+    public function presidentUpdate(Request $request)
+    {
+        $request->validate([
+            'status' => 'required'
+        ]);
+
+        if($request->ajax()){
+            DB::table('requisitions')
+                        ->where('id', $request->id)
+                        ->update([
+                            'approval_status' => $request->status, 
+                        ]);
+            return response()->json(['success' => 'Updated Successfully']);
+        }
+
     }
 
     /**
@@ -114,20 +160,69 @@ class RequisitionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        
+        Requisition::where('id', $request->id)
+                    ->delete();
+    }
+
+    public function viewStatus(Request $request)
+    {
+        if($request->ajax()){
+            $requisition = DB::table('requisitions as r')
+                                ->leftJoin('inventories as i', 'r.inventory_id', 'i.id', 'i.quantity_type')
+                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status', 'r.status_no', 'i.quantity_type')
+                                ->where('r.id', $request->id)
+                                ->first();
+
+        }
+        return response()->json($requisition);
     }
 
 
-    // public function getUnit(Request $request)
-    // {
-    //     if($request->ajax()){
-    //         $unit = DB::table('inventories')
-    //                     ->where('id', $request->inventory_id)
-    //                     ->first();
-    //         $getunit = $unit->quantity_type;
-    //         return response($getunit);
-    //     }
-    // }
+    
+    public function vpRequisitionIndex(Request $request)
+    {
+        $requisition = [];
+        if($request->ajax()){
+            $requisition = DB::table('requisitions as r')
+                                ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
+                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status', 'r.status_no')
+                                ->get();
+            return DataTables::of($requisition)
+                    ->addIndexColumn()
+                    ->addColumn('action', function ($row) {
+                        $btn = '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-secondary btn-sm viewRequisition"><i class="bi-eye"></i> </a> ';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+
+        return view('admin.requisition2', [
+            'requisition' => $requisition
+        ]);
+    }
+    public function presidentRequisitionIndex(Request $request)
+    {
+        $requisition = [];
+        if($request->ajax()){
+            $requisition = DB::table('requisitions as r')
+                                ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
+                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status', 'r.status_no')
+                                ->get();
+            return DataTables::of($requisition)
+                    ->addIndexColumn()
+                    ->addColumn('action', function ($row) {
+                        $btn = '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-secondary btn-sm viewRequisition"><i class="bi-eye"></i> </a> ';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+
+        return view('admin.requisition3', [
+            'requisition' => $requisition
+        ]);
+    }
 }

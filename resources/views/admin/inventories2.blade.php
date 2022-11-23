@@ -9,21 +9,7 @@
 </style>
 @section('content')
 <h4 class="text-center px-2 fw-bold text-secondary"> Inventory</h4>
-<div class="d-flex justify-content-between">
-    <div>
-        <button type="button" class="btn btn-secondary btn-sm" id="showModal">
-            <i class="bi-plus-circle"></i> Add Item
-          </button>
-    </div>
-<div>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item active" aria-current="page">Items</li>
-          <li class="breadcrumb-item"><a href="{{ route('admin.category') }}"> Categories</a></li>
-        </ol>
-      </nav>
-</div>
-</div>
+
 <table class="table table-bordered data-table nowrap" style="width: 100%;">
     <thead>
         <tr class="table-primary text-uppercase">
@@ -33,7 +19,6 @@
             <td class="text-center">Quantity</td>
             <td class="text-center">Date acquired</td>
             <td class="text-center">Description</td>
-            <td class="text-center">Action</td>
         </tr>
     </thead>
     <tbody></tbody>
@@ -100,7 +85,7 @@ $(document).ready(function(){
         serverSide: true,
         responsive: true,
         select: true,
-        ajax: "{{ route('admin.inventory') }}",
+        ajax: "{{ route('vp.inventory') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'title', name: 'title'},
@@ -108,7 +93,6 @@ $(document).ready(function(){
             {data: 'quantity', name: 'quantity'},
             {data: 'date_acquired', name: 'date_acquired'},
             {data: 'description', name: 'description'},
-            {data: 'action', name: 'action', orderable: false, searchable: false, class:'text-center'},
         ],
         columnDefs: [ 
           {
@@ -120,55 +104,6 @@ $(document).ready(function(){
       ]
 
     });
-    $('#showModal').on('click', function(){
-        // show modal
-        $('#id').val('');
-        $('#inventoryForm').trigger("reset");
-        $('#addModal').modal('show');
-        $('#savedata').html('Save');
-    });
-
-  //add function
-  $('#savedata').click(function (e) {
-    e.preventDefault();
-    $.ajax({
-        data: $('#inventoryForm').serialize(),
-        url : "{{ route('admin.store-inventory') }}",
-        type: "POST",
-        dataType: "json",
-            success: function (data) {
-                $('#inventoryForm').trigger("reset");
-                table.draw();
-                toastr.success('Item added successfully','Success');
-            },
-            error: function (data) {
-                toastr.error(data['responseJSON']['message'],'Error has occured');
-
-            }
-        });
-    });
-
-    // DELETE 
-    $('body').on('click', '.deleteInventory', function () {
-    var id = $(this).data("id");
-        if (confirm("Are You sure want to delete this item?") === true) {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ url('admin/inventory/destroy') }}",
-                data:{
-                id:id
-                },
-                success: function (data) {
-                table.draw();
-                toastr.success('Item deleted successfully','Success');
-                },
-                error: function (data) {
-                toastr.error(data['responseJSON']['message'],'Error has occured');
-                }
-            });
-        }
-    });
-
 }); //end of script
 
 </script>

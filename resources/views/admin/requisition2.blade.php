@@ -45,8 +45,7 @@
                     <div class="col-sm-4 text-center">
                         <select class="form-select form-select-sm fw-bold" aria-label="Default select example" name="status" id="status">
                             <option value="processing">On Process</option>
-                            <option value="received">Received</option>
-                            <option value="released">Release</option>
+                            <option value="approved">Approve</option>
                             <option value="rejected">Reject</option>
                           </select>
                     </div>
@@ -63,11 +62,6 @@
                 <div class="mb-3">
                     <label for="item_name">Quantity</label>:
                     <span id="quantity" class="fw-bold"></span>
-                    {{-- <input type="text" class="form-control form-control-sm" name="description" id="description" placeholder="e.g. Received 20 boxes"> --}}
-                </div>
-                <div class="mb-3">
-                    <label for="item_name">Recommending Status</label>:
-                    <span id="recommending" class="fw-bold"></span>
                     {{-- <input type="text" class="form-control form-control-sm" name="description" id="description" placeholder="e.g. Received 20 boxes"> --}}
                 </div>
                 <div class="mb-3">
@@ -103,29 +97,22 @@ $(document).ready(function(){
         serverSide: true,
         responsive: true,
         select: true,
-        ajax: "{{ route('admin.requisition') }}",
+        ajax: "{{ route('vp.requisition') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'department', name: 'department'},
             {data: 'item_name', name: 'item_name'},
              {data: 'status_no', name: 'status_no'},
-             {data: 'approval_status', name: 'approval_status', class: 'text-center'},
+             {data: 'status', name: 'status', class: 'text-center'},
             {data: 'action', name: 'action', orderable: false, searchable: false, class:'text-center'},
-        ],
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                text: '<i class="bi-plus-circle"></i> Add',
-                className: 'btn btn-secondary btn-sm new-requisition',
-            }
-        ],
+        ]
     });
 
     $('body').on('click', '.viewRequisition', function(){
         var id = $(this).data('id'); 
         $.ajax({
             type: "GET",
-            url: "{{ url('admin/requisition/status') }}",
+            url: "{{ url('vp-admin/requisition/status') }}",
             data:{
             id:id
             },
@@ -133,13 +120,11 @@ $(document).ready(function(){
                 console.log(data);
          
                     $('#item_name').html(data.item_name);
-                    $('#quantity').html(data.quantity + '( ' + data.quantity_type + ' )');
+                    $('#quantity').html(data.quantity + ' ' +  data.quantity_type );
                     $('#name').html(data.name);
                     $('#id').val(data.id);
-                    $('#recommending').html(data.recommending_status);
+                    $('#status').val(data.recommending_status);
                     $('#approval').html(data.approval_status);
-                    $('#status').val(data.status);
-
                     $('#viewRequisition').modal('show');
             },
             error: function (data) {
@@ -154,7 +139,7 @@ $(document).ready(function(){
         if (confirm("Are You sure want to delete this requisition?") === true) {
             $.ajax({
                 type: "DELETE",
-                url: "{{ url('admin/requisition/destroy') }}",
+                url: "{{ url('vp-admin/requisition/destroy') }}",
                 data:{
                 id:id
                 },
@@ -176,7 +161,7 @@ $(document).ready(function(){
         var id = $("#id").val();
             $.ajax({
             type: "POST",
-            url: "{{ url('admin/requisition/update') }}",
+            url: "{{ url('vp-admin/requisition/update') }}",
             data:{
             id:id, status:status
             },

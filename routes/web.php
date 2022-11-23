@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequisitionController;
 use App\Models\Inventory;
 use Illuminate\Support\Facades\Route;
@@ -32,17 +35,56 @@ Route::post('requisition/store', [HomeController::class, 'store'])->name('store-
 
 Route::get('tracking/status', [HomeController::class, 'trackStatus']);
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function(){
+Route::group(['prefix' => 'admin', 'middleware' => ['is_admin']], function(){
     Route::get('home', [AdminController::class, 'index'])->name('admin.home');
     // inventories
     Route::get('inventory', [InventoryController::class, 'index'])->name('admin.inventory');
     Route::post('inventory/store', [InventoryController::class, 'store'])->name('admin.store-inventory');
     Route::delete('inventory/destroy', [InventoryController::class, 'destroy'])->name('admin.destroy-inventory');
 
+    // categories
+    Route::get('category', [CategoryController::class, 'index'])->name('admin.category');
+    Route::post('category/store', [CategoryController::class, 'store'])->name('admin.store-category');
+    Route::delete('category/destroy', [CategoryController::class, 'destroy'])->name('admin.destroy-category');
+
     // requisitons
     Route::get('requisition', [RequisitionController::class, 'index'])->name('admin.requisition');
     Route::post('requisition/update', [RequisitionController::class, 'update'])->name('admin.update-requisition');
+    Route::delete('requisition/destroy', [RequisitionController::class, 'destroy']);
+    Route::get('requisition/status', [RequisitionController::class, 'viewStatus']);
+    Route::post('requisition/status/update', [RequisitionController::class, 'update']);
+
+    Route::get('/accounts', [AccountController::class, 'index'])->name('admin.accounts');
+    Route::post('account/store', [AccountController::class, 'store'])->name('admin.store-account');
+    Route::delete('account/destroy', [AccountController::class, 'destroy']);
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+    Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
+    Route::put('/profile/update', [AdminController::class, 'profileUpdate'])->name('profile.update');
+    Route::put('/password/update', [AdminController::class, 'passwordUpdate'])->name('password.update');
+});
+
+Route::group(['prefix' => 'vp-admin', 'middleware' => ['is_vp']], function(){
+    Route::get('/home', [AdminController::class, 'vpIndex'])->name('vp.home');
+    // inventories
+    Route::get('inventory', [InventoryController::class, 'vpIndex'])->name('vp.inventory');
+    // requisitons
+    Route::get('requisition', [RequisitionController::class, 'vpRequisitionIndex'])->name('vp.requisition');
+    Route::get('requisition/status', [RequisitionController::class, 'viewStatus']);
+    Route::post('requisition/update', [RequisitionController::class, 'vpUpdate']);
+});
+Route::group(['prefix' => 'president', 'middleware' => ['is_vp']], function(){
+    Route::get('/home', [AdminController::class, 'presidentIndex'])->name('president.home');
+    // inventories
+    Route::get('inventory', [InventoryController::class, 'presidentIndex'])->name('president.inventory');
+    // requisitons
+    Route::get('requisition', [RequisitionController::class, 'presidentRequisitionIndex'])->name('president.requisition');
+    Route::get('requisition/status', [RequisitionController::class, 'viewStatus']);
+    Route::post('requisition/update', [RequisitionController::class, 'presidentUpdate']);
+});
+
 
 Auth::routes([
     'register' => false,

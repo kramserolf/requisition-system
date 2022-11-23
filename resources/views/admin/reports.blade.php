@@ -1,39 +1,30 @@
 @extends('layouts.admin')
 <style>
-    #items {
+    #reports {
         border-left: 2px solid white;
     }
-    .sidebar-items {
+    .admin-report {
         color: rgb(182, 182, 182);
+    }
+    @media print
+    {
+    html, body { height: auto; }
+    .dt-print-table, .dt-print-table thead, .dt-print-table th, .dt-print-table tr {border: 0 none !important;}
     }
 </style>
 @section('content')
-<h4 class="text-center px-2 fw-bold text-secondary"> Inventory</h4>
-<div class="d-flex justify-content-between">
-    <div>
-        <button type="button" class="btn btn-secondary btn-sm" id="showModal">
-            <i class="bi-plus-circle"></i> Add Item
-          </button>
-    </div>
-<div>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item active" aria-current="page">Items</li>
-          <li class="breadcrumb-item"><a href="{{ route('admin.category') }}"> Categories</a></li>
-        </ol>
-      </nav>
-</div>
-</div>
-<table class="table table-bordered data-table nowrap" style="width: 100%;">
+<h4 class="text-center px-2 fw-bold text-secondary"> Reports</h4>
+
+<table class="table table-bordered data-table dt-print-table nowrap" style="width: 100%;">
     <thead>
         <tr class="table-primary text-uppercase">
             <td class="text-center">No.</td>
-            <td class="text-center">Category</td>
-            <td class="text-center">Item Name</td>
+            <td class="text-center">Department</td>
+            <td class="text-center">Name</td>
+            <td class="text-center">Item</td>
             <td class="text-center">Quantity</td>
-            <td class="text-center">Date acquired</td>
-            <td class="text-center">Description</td>
-            <td class="text-center">Action</td>
+            <td class="text-center">Approval Status</td>
+            <td class="text-center">Released Date</td>
         </tr>
     </thead>
     <tbody></tbody>
@@ -100,32 +91,42 @@ $(document).ready(function(){
         serverSide: true,
         responsive: true,
         select: true,
-        ajax: "{{ route('admin.inventory') }}",
+        ajax: "{{ route('reports') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'title', name: 'title'},
-            {data: 'item_name', name: 'item_name'},
+            {data: 'department', name: 'department'},
+            {data: 'name', name: 'description'},
+            {data: 'item_name', name: 'item_name', searchable: true},
             {data: 'quantity', name: 'quantity'},
-            {data: 'date_acquired', name: 'date_acquired'},
-            {data: 'description', name: 'description'},
-            {data: 'action', name: 'action', orderable: false, searchable: false, class:'text-center'},
+            {data: 'approval_status', name: 'approval_status'},
+            {data: 'released_date', name: 'released_date'},
+        ],
+        dom: 'frBtlip',
+        autoWidth: true,
+        buttons: [
+            {
+                extend: 'print',
+
+                repeatingHead: {
+                    logo: '{{ asset('images/sjcbi.png') }}',
+                    logoPosition: 'center',
+                    logoStyle: 'width: 90',
+                    title: '<h3 class="text-center m-4">Requisition System w/ Inventory - Reports</h3>'
+                },
+                title: '',
+            },
+            'spacer',
+            'pdf'
         ],
         columnDefs: [ 
           {
-            'targets': 3,
+            'targets': 4,
             'render': function(data, type, row){
               return data +' - '+row.quantity_type;
             }
         }
       ]
 
-    });
-    $('#showModal').on('click', function(){
-        // show modal
-        $('#id').val('');
-        $('#inventoryForm').trigger("reset");
-        $('#addModal').modal('show');
-        $('#savedata').html('Save');
     });
 
   //add function

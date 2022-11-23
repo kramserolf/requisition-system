@@ -23,23 +23,25 @@
                     <span id="received_status" class="badge bg-danger"><strong>not found.</strong> </span>
                 </div>
                 <div class="mt-3 text-center" id="div_name" hidden>
-                    <label for="item_name" class="form-label" style="font-size: 13px;">Name </label>
-                    <span id="name" class=""><strong></strong> </span>
+                    <label for="item_name" class="form-label" style="font-size: 13px;">Name: </label>
+                    <span id="name" class="fw-bold"></span>
                 </div>
 
                 <div class="mt-1 text-center" id="div_dept" hidden>
-                    <label for="item_name" class="form-label" style="font-size: 13px;">Department </label>
-                    <span id="department" class=""><strong></strong> </span>
+                    <label for="item_name" class="form-label" style="font-size: 13px;">Department: </label>
+                    <span id="department" class="fw-bold"></span>
                 </div>
                 <div class="mt-1 text-center" id="div_approval" hidden>
-                    <label for="item_name" class="form-label" style="font-size: 13px;">Approval Status: </label>
+                    <label for="item_name" class="form-label" style="font-size: 13px;">Status: </label>
                     <span id="approval" class="badge bg-warning"><strong></strong> </span>
                 </div>
                 <div class="mt-1 text-center" id="recommending_status">
 
                 </div>
-                <div class="mt-3 text-center" id="item_name">
-
+                <div class="mt-3 text-center" id="refresh" hidden>
+                    <a href="{{ route('tracking') }}">
+                        <i class="bi-bootstrap-reboot fs-3"></i>
+                    </a>
                 </div>
                 
             </div>
@@ -70,17 +72,26 @@
                     $('#requisition_no').attr('hidden', false);
                 } else{
                   $.each(data.message, function(index, value){
-                    console.log(index + ":" + value['item_name']);
-                    $('#recommending_status').append('<label for="item_name" class="form-label" style="font-size: 13px;">Item Name: </label><span class=""><strong>'+ ' ' +value['item_name'] +' '+ 'qty ' +value['quantity'] +'</strong> </span><br>');
+                    $('#recommending_status').append('<div class="mt-1"><label for="item_name" class="form-label" style="font-size: 13px;">Item: </label><span class=""><strong>'+ ' ' +value['item_name'] +' - ' +value['quantity'] + ' ' + value['unit'] + ' ' + '(' + value['status']+ ')'+ ' </strong> </span><br> ' + '<label class="form-label">Approval Status:</label>'+'<span class="approval-status" id="approval_status">' + '  ' + value['approval_status'] +'</span> ' +'<br></div>');
+                   if(value['approval_status'] == 'approved'){
+                    $('.approval-status').addClass('badge bg-success');
+                   }
+                   if(value['approval_status'] == 'pending'){
+                    $('.approval-status').addClass('badge bg-secondary');
+                   }
+                   if(value['approval_status'] == 'released'){
+                    $('.approval-status').addClass('badge bg-primary');
+                   }
                   });
                   $('#name').append(data.message[0]['name']);
                   $('#department').append(data.message[0]['department']);
-                  $('#approval').append(data.message[0]['approval_status']);
+
                   $('#div_name').attr('hidden', false);
                   $('#div_dept').attr('hidden', false);
-                  $('#div_approval').attr('hidden', false);
+
                   $('#requisition_no').attr('hidden', true);
                   $('#savedata').attr('hidden', true);
+                  $('#refresh').attr('hidden', false);
                 }
             },
             error: function (data) {

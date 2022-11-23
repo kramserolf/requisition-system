@@ -18,8 +18,9 @@
 <div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item active" aria-current="page">Items</li>
-          <li class="breadcrumb-item"><a href="{{ route('admin.category') }}"> Categories</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.inventory') }}"> Items</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Categories</li>
+
         </ol>
       </nav>
 </div>
@@ -28,10 +29,7 @@
     <thead>
         <tr class="table-primary text-uppercase">
             <td class="text-center">No.</td>
-            <td class="text-center">Category</td>
-            <td class="text-center">Item Name</td>
-            <td class="text-center">Quantity</td>
-            <td class="text-center">Date acquired</td>
+            <td class="text-center">Title</td>
             <td class="text-center">Description</td>
             <td class="text-center">Action</td>
         </tr>
@@ -43,7 +41,7 @@
 <div class="modal fade" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
     <div class="modal-content">
-        <form name="inventoryForm" id="inventoryForm" enctype="multipart/form-data">
+        <form name="categoryForm" id="categoryForm" enctype="multipart/form-data">
 
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">New Item</h5>
@@ -52,24 +50,12 @@
             <div class="modal-body">
                 <input type="hidden" name="id" id="id">
                 <div class="mb-3">
-                    <label for="item_name" class="form-label fw-bold">Item Name:</label>
-                    <input type="text" class="form-control form-control-sm" name="item_name" id="item_name" placeholder="e.g. Bondpaper, Ballpen">
+                    <label for="item_name" class="form-label fw-bold">Title:</label>
+                    <input type="text" class="form-control form-control-sm" name="title" id="title" placeholder="e.g. Bondpaper, Ballpen">
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label fw-bold">Description:</label>
                     <input type="text" class="form-control form-control-sm" name="description" id="description" placeholder="e.g. Received 20 boxes">
-                </div>
-                <div class="mb-3">
-                    <label for="quantity" class="form-label fw-bold">Quantity:</label>
-                    <input type="text" class="form-control form-control-sm text" name="quantity" id="quantity" placeholder="e.g. 20">
-                </div>
-                <div class="mb-3">
-                    <label for="quantity_type" class="form-label fw-bold">Unit:</label>
-                    <input type="text" class="form-control form-control-sm" name="quantity_type" id="quantity_type" placeholder="e.g. pcs / box / rim">
-                </div>
-                <div class="mb-3">
-                    <label for="date_acquired" class="form-label fw-bold">Date Received:</label>
-                    <input type="date" class="form-control form-control-sm" name="date_acquired" id="date_acquired">
                 </div>
             </div>
             <div class="modal-footer">
@@ -100,30 +86,19 @@ $(document).ready(function(){
         serverSide: true,
         responsive: true,
         select: true,
-        ajax: "{{ route('admin.inventory') }}",
+        ajax: "{{ route('admin.category') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'title', name: 'title'},
-            {data: 'item_name', name: 'item_name'},
-            {data: 'quantity', name: 'quantity'},
-            {data: 'date_acquired', name: 'date_acquired'},
             {data: 'description', name: 'description'},
             {data: 'action', name: 'action', orderable: false, searchable: false, class:'text-center'},
-        ],
-        columnDefs: [ 
-          {
-            'targets': 3,
-            'render': function(data, type, row){
-              return data +' - '+row.quantity_type;
-            }
-        }
-      ]
+        ]
 
     });
     $('#showModal').on('click', function(){
         // show modal
         $('#id').val('');
-        $('#inventoryForm').trigger("reset");
+        $('#categoryForm').trigger("reset");
         $('#addModal').modal('show');
         $('#savedata').html('Save');
     });
@@ -132,14 +107,14 @@ $(document).ready(function(){
   $('#savedata').click(function (e) {
     e.preventDefault();
     $.ajax({
-        data: $('#inventoryForm').serialize(),
-        url : "{{ route('admin.store-inventory') }}",
+        data: $('#categoryForm').serialize(),
+        url : "{{ route('admin.store-category') }}",
         type: "POST",
         dataType: "json",
             success: function (data) {
-                $('#inventoryForm').trigger("reset");
+                $('#categoryForm').trigger("reset");
                 table.draw();
-                toastr.success('Item added successfully','Success');
+                toastr.success('Category added successfully','Success');
             },
             error: function (data) {
                 toastr.error(data['responseJSON']['message'],'Error has occured');
@@ -149,18 +124,18 @@ $(document).ready(function(){
     });
 
     // DELETE 
-    $('body').on('click', '.deleteInventory', function () {
+    $('body').on('click', '.deleteCategory', function () {
     var id = $(this).data("id");
-        if (confirm("Are You sure want to delete this item?") === true) {
+        if (confirm("Are You sure want to delete this category?") === true) {
             $.ajax({
                 type: "DELETE",
-                url: "{{ url('admin/inventory/destroy') }}",
+                url: "{{ url('admin/category/destroy') }}",
                 data:{
                 id:id
                 },
                 success: function (data) {
                 table.draw();
-                toastr.success('Item deleted successfully','Success');
+                toastr.success('Category deleted successfully','Success');
                 },
                 error: function (data) {
                 toastr.error(data['responseJSON']['message'],'Error has occured');

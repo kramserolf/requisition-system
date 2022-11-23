@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Laravel\Ui\Presets\React;
+
 class HomeController extends Controller
 {
     /**
@@ -22,7 +24,8 @@ class HomeController extends Controller
      */
     public function request_form()
     {
-        $inventory = Inventory::get();
+        $inventory = Inventory::where('quantity', '>=', 1)
+                        ->get();
 
         return view('request-form', compact('inventory'));
     }
@@ -49,7 +52,8 @@ class HomeController extends Controller
                 'quantity' => $quantity[$i],
                 'department' => $request->department,
                 'name' => $request->name,
-                'status_no' => $tracking_no
+                'status_no' => $tracking_no,
+                'status' => 'pending'
             ];
         }
 
@@ -70,7 +74,7 @@ class HomeController extends Controller
         if($trackingStatus){
             $trackingObject = DB::table('requisitions as r')
                             ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
-                            ->select('r.*', 'i.item_name')
+                            ->select('r.*', 'i.item_name', 'i.quantity_type as unit')
                             ->where('status_no', $request->tracking)
                             ->get();
             $tracking = $trackingObject->toArray();

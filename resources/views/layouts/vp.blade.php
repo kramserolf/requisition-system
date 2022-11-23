@@ -20,10 +20,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"/>
-    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.2.4/css/fixedHeader.bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap5.css"/>
-    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"/> --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     
 
@@ -33,19 +31,12 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
     <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/fixedheader/3.2.4/js/dataTables.fixedHeader.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> --}}
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.bootstrap5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="{{ asset('js/button.print.js') }}"></script>
-    {{-- <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script> --}}
 
    
     <style>
@@ -68,11 +59,9 @@
         @media (min-width: 768px) {
             .sticky-top {
                 height: 100vh;
-            }
         }
-        .sidebar:hover{
-            color: rgb(179, 172, 172) !important;
         }
+
     </style>
 </head>
 
@@ -88,95 +77,33 @@
                     <span class="fs-5 d-none d-sm-inline">SJCBI Requisition System <span style="font-size: 12px;">with</span> Inventory</span>
                 </a>
                     <ul class="nav nav-pills fs-5 flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto justify-content-center align-items-center align-items-sm-start px-2 fs-5" id="menu">
-                        @if(auth()->user()->is_role == 0 )
-                            <li class="nav-item" id="home">
-                                <a href="{{ route('admin.home') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
-                                    <i class="bi-house-fill sidebar-home"></i> <span class="ms-1 d-none d-sm-inline sidebar-home">Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="nav-item" id="items">
-                                <a href="{{ route('admin.inventory') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
-                                    <i class="bi-basket-fill sidebar-items"></i> <span class="ms-1 d-none d-sm-inline sidebar-items">Items List</span>
-                                </a>
-                            </li>
-                            <li class="nav-item" id="accounts">
-                                <a href="{{ route('admin.accounts') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
-                                    <i class="bi-person-square sidebar-accounts"></i> <span class="ms-1 d-none d-sm-inline sidebar-accounts">Accounts</span>
-                                </a>
-                            </li>
-                            
-                            <li class="nav-item" id="requisitions">
-                                <a href="{{ route('admin.requisition') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
-                                    <i class="bi-file-earmark-text-fill sidebar-requisition"></i> <span class="ms-1 d-none d-sm-inline sidebar-requisition">Requisitions</span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item" id="reports">
-                                <a href="{{ route('reports') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
-                                    <i class="bi-printer-fill admin-report"></i> <span class="ms-1 d-none d-sm-inline admin-report">Reports</span>
-                                </a>
-                            </li>
-                            
-                            @elseif(auth()->user()->is_role == 1 )
-                        <li class="nav-item" id="home">
-                            <a href="{{ route('vp.home') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
+                        <li class="nav-item">
+                            <a href="{{ route('vp.home') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3">
                                 <i class="bi-house-fill sidebar-home"></i> <span class="ms-1 d-none d-sm-inline sidebar-home">Dashboard</span>
                             </a>
                         </li>
-
-                        <li class="nav-item" id="items">
-                            <a href="{{ route('vp.inventory')}}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.inventory') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3">
                                 <i class="bi-basket-fill sidebar-items"></i> <span class="ms-1 d-none d-sm-inline sidebar-items">Inventory</span>
                             </a>
                         </li>
 
-                        
-                        <li class="nav-item" id="requisitions">
-                            <a href="{{ route('vp.requisition') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
+                        <li class="nav-item">
+                            <a href="{{ route('vp.requisition') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3">
                                 <i class="bi-file-earmark-text-fill sidebar-requisition"></i> <span class="ms-1 d-none d-sm-inline sidebar-requisition">Requisitions</span>
                             </a>
                         </li>
 
-                        <li class="nav-item" id="reports">
-                            <a href="{{ route('reports') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
-                                <i class="bi-printer-fill admin-report"></i> <span class="ms-1 d-none d-sm-inline admin-report">Reports</span>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link align-middle fs-5 mb-1 text-white px-3">
+                                <i class="bi-journal-text admin-report"></i> <span class="ms-1 d-none d-sm-inline admin-report">Reports</span>
                             </a>
                         </li>
-                        @elseif (auth()->user()->is_role == 2)
-                        <li class="nav-item" id="home">
-                            <a href="{{ route('president.home') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
-                                <i class="bi-house-fill sidebar-home"></i> <span class="ms-1 d-none d-sm-inline sidebar-home">Dashboard</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item" id="items">
-                            <a href="{{ route('president.inventory') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
-                                <i class="bi-basket-fill sidebar-items"></i> <span class="ms-1 d-none d-sm-inline sidebar-items">Inventory</span>
-                            </a>
-                        </li>
-
-                        
-                        <li class="nav-item" id="requisitions">
-                            <a href="{{ route('president.requisition') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
-                                <i class="bi-file-earmark-text-fill sidebar-requisition"></i> <span class="ms-1 d-none d-sm-inline sidebar-requisition">Requisitions</span>
-                            </a>
-                        </li>
-
-                        <li class="nav-item" id="reports">
-                            <a href="{{ route('reports') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3">
-                                <i class="bi-printer-fill admin-report"></i> <span class="ms-1 d-none d-sm-inline admin-report sidebar">Reports</span>
-                            </a>
-                        </li>
-                    @endif
 
                     </ul>
                 <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                       @if (auth()->user()->image == null)
-                        <img src="{{ asset('images/sjcbi.png') }}" alt="profile image" width="28" height="28" class="rounded-circle">
-                        @else
-                        <img src="{{ asset('images/'.auth()->user()->image.'') }}" alt="profile image" width="28" height="28" class="rounded-circle">
-                       @endif
+                        <img src="{{ asset('images/sjcbi.png') }}" alt="hugenerd" width="28" height="28" class="rounded-circle">
                         <span class="d-none d-sm-inline mx-1">
                             @auth
                                 {{Auth::user()->name}}
@@ -184,7 +111,7 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

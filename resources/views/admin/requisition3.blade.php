@@ -44,9 +44,7 @@
                     </div>
                     <div class="col-sm-4 text-center">
                         <select class="form-select form-select-sm fw-bold" aria-label="Default select example" name="status" id="status">
-                            <option value="processing">On Process</option>
-                            <option value="received">Received</option>
-                            <option value="released">Release</option>
+                            <option value="approved">Approve</option>
                             <option value="rejected">Reject</option>
                           </select>
                     </div>
@@ -68,11 +66,6 @@
                 <div class="mb-3">
                     <label for="item_name">Recommending Status</label>:
                     <span id="recommending" class="fw-bold"></span>
-                    {{-- <input type="text" class="form-control form-control-sm" name="description" id="description" placeholder="e.g. Received 20 boxes"> --}}
-                </div>
-                <div class="mb-3">
-                    <label for="item_name">Approval Status</label>:
-                    <span id="approval" class="fw-bold"></span>
                     {{-- <input type="text" class="form-control form-control-sm" name="description" id="description" placeholder="e.g. Received 20 boxes"> --}}
                 </div>
             </div>
@@ -103,21 +96,14 @@ $(document).ready(function(){
         serverSide: true,
         responsive: true,
         select: true,
-        ajax: "{{ route('admin.requisition') }}",
+        ajax: "{{ route('president.requisition') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'department', name: 'department'},
             {data: 'item_name', name: 'item_name'},
              {data: 'status_no', name: 'status_no'},
-             {data: 'approval_status', name: 'approval_status', class: 'text-center'},
+             {data: 'recommending_status', name: 'recommending_status', class: 'text-center'},
             {data: 'action', name: 'action', orderable: false, searchable: false, class:'text-center'},
-        ],
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                text: '<i class="bi-plus-circle"></i> Add',
-                className: 'btn btn-secondary btn-sm new-requisition',
-            }
         ],
     });
 
@@ -125,7 +111,7 @@ $(document).ready(function(){
         var id = $(this).data('id'); 
         $.ajax({
             type: "GET",
-            url: "{{ url('admin/requisition/status') }}",
+            url: "{{ url('president/requisition/status') }}",
             data:{
             id:id
             },
@@ -133,40 +119,17 @@ $(document).ready(function(){
                 console.log(data);
          
                     $('#item_name').html(data.item_name);
-                    $('#quantity').html(data.quantity + '( ' + data.quantity_type + ' )');
+                    $('#quantity').html(data.quantity + ' ' +  data.quantity_type );
                     $('#name').html(data.name);
                     $('#id').val(data.id);
+                    $('#status').val(data.approval_status);
                     $('#recommending').html(data.recommending_status);
-                    $('#approval').html(data.approval_status);
-                    $('#status').val(data.status);
-
                     $('#viewRequisition').modal('show');
             },
             error: function (data) {
             toastr.error(data['responseJSON']['message'],'Error has occured');
             }
         });
-    });
-
-    // DELETE 
-    $('body').on('click', '.deleteRequisition', function () {
-    var id = $(this).data("id");
-        if (confirm("Are You sure want to delete this requisition?") === true) {
-            $.ajax({
-                type: "DELETE",
-                url: "{{ url('admin/requisition/destroy') }}",
-                data:{
-                id:id
-                },
-                success: function (data) {
-                table.draw();
-                toastr.success('Requisition deleted successfully','Success');
-                },
-                error: function (data) {
-                toastr.error(data['responseJSON']['message'],'Error has occured');
-                }
-            });
-        }
     });
 
     // update status
@@ -176,7 +139,7 @@ $(document).ready(function(){
         var id = $("#id").val();
             $.ajax({
             type: "POST",
-            url: "{{ url('admin/requisition/update') }}",
+            url: "{{ url('president/requisition/update') }}",
             data:{
             id:id, status:status
             },
@@ -190,10 +153,6 @@ $(document).ready(function(){
             }
         });
     })
-
-    $('.new-requisition').click(function(){
-        window.open('{{ route("request.form") }}');
-    });
 
     $('#status').on('change', function(){
         $('#savedata').attr('disabled', false);

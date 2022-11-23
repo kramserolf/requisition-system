@@ -23,7 +23,10 @@ class InventoryController extends Controller
     {
         $inventory = [];
         if($request->ajax()){
-            $inventory = Inventory::get();
+            $inventory = DB::table('inventories as i')
+                                ->leftJoin('categories as c', 'i.category_id', 'c.id')
+                                ->select('i.*', 'c.title')
+                                ->get();
             return DataTables::of($inventory)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
@@ -35,6 +38,36 @@ class InventoryController extends Controller
                     ->make(true);
         }
         return view('admin.inventories', compact('inventory'));
+    }
+
+    public function vpIndex(Request $request)
+    {
+        $inventory = [];
+        if($request->ajax()){
+            $inventory = DB::table('inventories as i')
+                            ->leftJoin('categories as c', 'i.category_id', 'c.id')
+                            ->select('i.*', 'c.title')
+                            ->get();
+            return DataTables::of($inventory)
+                    ->addIndexColumn()
+                    ->make(true);
+        }
+        return view('admin.inventories2', compact('inventory'));
+    }
+    
+    public function presidentIndex(Request $request)
+    {
+        $inventory = [];
+        if($request->ajax()){
+            $inventory = DB::table('inventories as i')
+                            ->leftJoin('categories as c', 'i.category_id', 'c.id')
+                            ->select('i.*', 'c.title')
+                            ->get();
+            return DataTables::of($inventory)
+                    ->addIndexColumn()
+                    ->make(true);
+        }
+        return view('admin.inventories3', compact('inventory'));
     }
 
     /**

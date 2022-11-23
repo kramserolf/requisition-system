@@ -17,7 +17,7 @@
                                 <select class="form-select form-select-sm select-inventory" multiple="multiple" aria-label="Default select example" name="inventory_id" id="select_inventory">
                                     <option value=""></option>
                                     @foreach ($inventory as $item )
-                                        <option value="{{ $item->id }}">{{ $item->item_name }} - {{ $item->quantity }} {{ $item->quantity_type }} <span style="font-size: 11px">(available)</span></option>
+                                        <option value="{{ $item->id}}">{{ $item->item_name }} - {{ $item->quantity }} {{ $item->quantity_type }} <span style="font-size: 11px">(available)</span></option>
                                     @endforeach
                                 </select>
                             </div>
