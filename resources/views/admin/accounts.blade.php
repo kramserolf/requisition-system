@@ -5,6 +5,7 @@
     }
     .sidebar-accounts {
         color: rgb(182, 182, 182);
+        margin-left: 5px;
     }
 </style>
 @section('content')

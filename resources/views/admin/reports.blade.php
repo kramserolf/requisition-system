@@ -5,6 +5,7 @@
     }
     .admin-report {
         color: rgb(182, 182, 182);
+        margin-left: 5px;
     }
     @media print
     {
