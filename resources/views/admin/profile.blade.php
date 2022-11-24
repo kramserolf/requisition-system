@@ -22,22 +22,22 @@
     <div class="card p-3 mb-4">
         <div class="card-body">
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="_method" value="PUT">
-
+                @csrf
+                @method('PUT')
+                
                 <h5>Profile Information</h5>
                 <p>Update your account's profile information and email address.</p>
                 <div class="form-group focused col-md-5 mb-3">
                     <label class="form-control-label mb-1" for="name">Name</label>
-                    <input type="text" id="name" class="form-control fw-bold" name="name" placeholder="Name" value="{{ old('name', Auth::user()->name) }}">
+                    <input type="text" id="name" class="form-control" name="name" placeholder="Name" value="{{ old('name', Auth::user()->name) }}">
                 </div>
                 <div class="form-group focused col-md-5 mb-3">
                     <label class="form-control-label mb-1" for="last_name">Email</label>
-                    <input type="email" id="email" class="form-control fw-bold" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}">
+                    <input type="email" id="email" class="form-control" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}">
                 </div>
                 <div class="form-group focused col-md-5 mb-3">
                     <label class="form-control-label mb-1" for="last_name">Photo <span class="text-muted" style="font-size: 12px">(optional)</span></label>
-                    <input type="file" id="profileImage" class="form-control fw-bold" name="image">
+                    <input type="file" id="profileImage" class="form-control" name="image">
                     <div class="text-center mt-3 preview-image">
                         <img src="#" alt="Offer Image" id="previewImage" style="width: 90%">
                     </div>

@@ -49,7 +49,7 @@
       }
     </style>
 </head>
-<body>
+<body style="background-color: rgb(24, 132, 5, 0.4)">
     <div id="app">
         {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

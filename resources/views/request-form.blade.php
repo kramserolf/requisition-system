@@ -53,7 +53,7 @@
                         <span id="tracking" class="text-decoration-underline fw-bold pt-2 fs-5"></span><br>
                         <span style="font-size: 11px"><strong>Note</strong> Please copy RSN for status inquiry.</span>
                     </div>
-                    <div class="mt-2 text-center">
+                    <div class="mt-4 text-center">
                         <button type="button" class="btn btn-success btn-sm" name="savedata" id="savedata">Request</button>
                         <span style="font-size: 13px">Click <a href="{{ route('tracking') }}">here</a> for status inquiry. </span>
                     </div>
@@ -113,8 +113,7 @@
             theme: "bootstrap-5",
             selectionCssClass: "select2--small", // For Select2 v4.1
             placeholder: "Select item",
-            allowClear: true,
-            tags: true
+            allowClear: true
         });
         $('#quantity').keypress(function(e){
             if(e.keyCode == 13){
