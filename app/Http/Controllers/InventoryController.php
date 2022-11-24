@@ -25,7 +25,11 @@ class InventoryController extends Controller
         if($request->ajax()){
             $inventory = DB::table('inventories as i')
                                 ->leftJoin('categories as c', 'i.category_id', 'c.id')
-                                ->select('i.*', 'c.title')
+                                ->select(
+                                    'i.*', 
+                                    'c.title', 
+                                    DB::raw('DATE_FORMAT(i.date_acquired, \'%M %d, %Y\') as date_acquired')
+                                    )
                                 ->get();
             return DataTables::of($inventory)
                     ->addIndexColumn()
@@ -46,7 +50,11 @@ class InventoryController extends Controller
         if($request->ajax()){
             $inventory = DB::table('inventories as i')
                             ->leftJoin('categories as c', 'i.category_id', 'c.id')
-                            ->select('i.*', 'c.title')
+                            ->select(
+                                'i.*', 
+                                'c.title', 
+                                DB::raw('DATE_FORMAT(i.date_acquired, \'%M %d, %Y\') as date_acquired')
+                                )
                             ->get();
             return DataTables::of($inventory)
                     ->addIndexColumn()
@@ -61,7 +69,11 @@ class InventoryController extends Controller
         if($request->ajax()){
             $inventory = DB::table('inventories as i')
                             ->leftJoin('categories as c', 'i.category_id', 'c.id')
-                            ->select('i.*', 'c.title')
+                            ->select(
+                                'i.*', 
+                                'c.title', 
+                                DB::raw('DATE_FORMAT(i.date_acquired, \'%M %d, %Y\') as date_acquired')
+                                )
                             ->get();
             return DataTables::of($inventory)
                     ->addIndexColumn()

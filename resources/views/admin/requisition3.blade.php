@@ -19,6 +19,7 @@
             <td class="text-center">Item</td>
             <td class="text-center">Requisition #</td>
             <td class="text-center">Status</td>
+            <td class="text-center">Date</td>
             <td class="text-center">Action</td>
         </tr>
     </thead>
@@ -104,6 +105,7 @@ $(document).ready(function(){
             {data: 'item_name', name: 'item_name'},
              {data: 'status_no', name: 'status_no'},
              {data: 'recommending_status', name: 'recommending_status', class: 'text-center'},
+             {data: 'created_at', name: 'created_at'},
             {data: 'action', name: 'action', orderable: false, searchable: false, class:'text-center'},
         ],
     });

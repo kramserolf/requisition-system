@@ -14,7 +14,11 @@ class ReportController extends Controller
         if($request->ajax()){
             $report = DB::table('requisitions as r')
                             ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
-                            ->select('i.*', 'r.*')
+                            ->select(
+                                'i.*', 
+                                'r.*',
+                                DB::raw('DATE_FORMAT(r.released_date, \'%M %d, %Y\') as released_date')
+                                )
                             // ->where('r.released_date', '>', 0)
                             ->get();
             return DataTables::of($report)

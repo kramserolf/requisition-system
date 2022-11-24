@@ -25,7 +25,7 @@
             <td class="text-center">Item</td>
             <td class="text-center">Quantity</td>
             <td class="text-center">Approval Status</td>
-            <td class="text-center">Released Date</td>
+            <td class="text-center">Date Released</td>
         </tr>
     </thead>
     <tbody></tbody>

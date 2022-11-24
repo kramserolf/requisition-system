@@ -25,7 +25,11 @@ class RequisitionController extends Controller
         if($request->ajax()){
             $requisition = DB::table('requisitions as r')
                                 ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
-                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status', 'r.status_no')
+                                ->select(
+                                    'r.*',
+                                    'i.item_name',
+                                    DB::raw('DATE_FORMAT(r.created_at, \'%M %d, %Y\') as created_at')
+                                )
                                 ->get();
             return DataTables::of($requisition)
                     ->addIndexColumn()
@@ -187,7 +191,11 @@ class RequisitionController extends Controller
         if($request->ajax()){
             $requisition = DB::table('requisitions as r')
                                 ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
-                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status', 'r.status_no')
+                                ->select(
+                                    'r.*',
+                                    'i.item_name',
+                                    DB::raw('DATE_FORMAT(r.created_at, \'%M %d, %Y\') as created_at')
+                                )
                                 ->get();
             return DataTables::of($requisition)
                     ->addIndexColumn()
@@ -209,7 +217,11 @@ class RequisitionController extends Controller
         if($request->ajax()){
             $requisition = DB::table('requisitions as r')
                                 ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
-                                ->select('r.id', 'i.item_name', 'r.quantity', 'r.status', 'r.name', 'r.department', 'r.recommending_status', 'r.approval_status', 'r.status_no')
+                                ->select(
+                                    'r.*',
+                                    'i.item_name',
+                                    DB::raw('DATE_FORMAT(r.created_at, \'%M %d, %Y\') as created_at')
+                                )
                                 ->get();
             return DataTables::of($requisition)
                     ->addIndexColumn()

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Database\DBAL\TimestampType;
 use Laravel\Ui\Presets\React;
 
 class HomeController extends Controller
@@ -53,7 +54,8 @@ class HomeController extends Controller
                 'department' => $request->department,
                 'name' => $request->name,
                 'status_no' => $tracking_no,
-                'status' => 'pending'
+                'status' => 'pending',
+                'created_at' => Carbon::now()->toDateString()
             ];
         }
 
