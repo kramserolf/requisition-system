@@ -34,8 +34,8 @@ class InventoryController extends Controller
             return DataTables::of($inventory)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
-                        $btn = '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-secondary btn-sm editInventory"><i class="bi-pencil-square"></i> </a> ';
-                        $btn .= '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-danger btn-sm deleteInventory"><i class="bi-trash"></i> </a>';
+                        // $btn = '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-secondary btn-sm editInventory"><i class="bi-pencil-square"></i> </a> ';
+                        $btn = '<a href="javascript:void(0);" data-id="'.$row->id.'" class="btn btn-outline-danger btn-sm deleteInventory"><i class="bi-trash"></i> </a>';
                         return $btn;
                     })
                     ->rawColumns(['action'])
