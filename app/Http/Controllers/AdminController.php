@@ -106,6 +106,7 @@ class AdminController extends Controller
 
         // get image name
         $file = $request->file('image');
+        
         $imageName = $file->getClientOriginalName();
         // move the image to folder
         $request->image->move(public_path('images/'), $imageName);
