@@ -23,7 +23,7 @@ class AccountController extends Controller
         if($request->ajax()){
             $account = DB::table('accounts as a')
                             ->leftJoin('users as u', 'a.user_id', 'u.id')
-                            ->select('a.*','u.name')
+                            ->select('a.*','u.name', 'u.username')
                             ->get();
             return DataTables::of($account)
                     ->addIndexColumn()
@@ -59,6 +59,7 @@ class AccountController extends Controller
         $request->validate([
             'role_type' => 'required|string',
             'name' => 'required|string|max:191',
+            'username' => 'required|string|max:191',
             'email' => 'required|string|unique:users',
             'position' => 'required|string'
         ]);
@@ -68,6 +69,7 @@ class AccountController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($password),
             'is_role' => 0

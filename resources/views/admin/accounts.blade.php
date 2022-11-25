@@ -17,6 +17,7 @@
             <td class="text-center">No.</td>
             <td class="text-center">Account Type</td>
             <td class="text-center">Name</td>
+            <td class="text-center">Username</td>
             <td class="text-center">Position</td>
             <td class="text-center">Action</td>
         </tr>
@@ -43,6 +44,10 @@
               <div class="mb-3">
                 <label for="description" class="form-label fw-bold">Name:</label>
                 <input type="text" class="form-control form-control-sm" name="name" id="name">
+             </div>
+             <div class="mb-3">
+                <label for="description" class="form-label fw-bold">Username:</label>
+                <input type="text" class="form-control form-control-sm" name="username" id="username">
              </div>
              <div class="mb-3">
                 <label for="quantity" class="form-label fw-bold">Email:</label>
@@ -86,6 +91,7 @@ $(document).ready(function(){
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'role_type', name: 'role_type'},
             {data: 'name', name: 'name'},
+            {data: 'username', name: 'username'},
             {data: 'position', name: 'position'},
             {data: 'action', name: 'action', orderable: false, searchable: false, class:'text-center'},
         ],
