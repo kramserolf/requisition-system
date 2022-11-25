@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Inventory extends Model
+class ReturnItem extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'item_name',
-        'description',
-        'quantity',
-        'quantity_type',
-        'date_acquired',
-        'category_id',
+        'requisition_id',
+        'issue',
+        'date_returned',
+        'remarks'
     ];
 }

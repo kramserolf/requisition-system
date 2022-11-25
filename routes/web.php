@@ -7,7 +7,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequisitionController;
+use App\Http\Controllers\ReturnItemController;
 use App\Models\Inventory;
+use App\Models\Requisition;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,12 +54,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['is_admin']], function(){
     Route::get('requisition', [RequisitionController::class, 'index'])->name('admin.requisition');
     Route::post('requisition/update', [RequisitionController::class, 'update'])->name('admin.update-requisition');
     Route::delete('requisition/destroy', [RequisitionController::class, 'destroy']);
-    Route::get('requisition/status', [RequisitionController::class, 'viewStatus']);
+    Route::get('requisition/status/{id}', [RequisitionController::class, 'viewStatus']);
     Route::post('requisition/status/update', [RequisitionController::class, 'update']);
 
     Route::get('/accounts', [AccountController::class, 'index'])->name('admin.accounts');
     Route::post('account/store', [AccountController::class, 'store'])->name('admin.store-account');
     Route::delete('account/destroy', [AccountController::class, 'destroy']);
+
+    // store return items
+    Route::post('reports/return-items', [ReturnItemController::class, 'store'])->name('return.store-items');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -64,6 +70,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
     Route::put('/profile/update', [AdminController::class, 'profileUpdate'])->name('profile.update');
     Route::put('/password/update', [AdminController::class, 'passwordUpdate'])->name('password.update');
+
+    // return Items
+    Route::get('reports/return-items', [ReturnItemController::class, 'index'])->name('return.items');
 });
 
 Route::group(['prefix' => 'vp-admin', 'middleware' => ['is_vp']], function(){
@@ -83,6 +92,14 @@ Route::group(['prefix' => 'president', 'middleware' => ['is_vp']], function(){
     Route::get('requisition', [RequisitionController::class, 'presidentRequisitionIndex'])->name('president.requisition');
     Route::get('requisition/status', [RequisitionController::class, 'viewStatus']);
     Route::post('requisition/update', [RequisitionController::class, 'presidentUpdate']);
+});
+
+Route::get('mail', function(){
+    $requisitions = DB::table('requisitions as r')
+                        ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
+                        ->select('r.*', 'i.item_name', 'i.quantity_type')
+                        ->get();
+    return new \App\Mail\RequisitionMail($requisitions);
 });
 
 

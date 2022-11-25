@@ -52,6 +52,15 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" name="id" id="id">
+                <div class="form-group col-sm-12 mb-3">
+                    <label for="item_name" class="form-label fw-bold">Category:</label>
+                    <select class="form-select form-select-sm select-category" aria-label="Default select example" name="category" id="select_category">
+                        <option value=""></option>
+                        @foreach ($categories as $category )
+                            <option value="{{ $category->id}}">{{ $category->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="mb-3">
                     <label for="item_name" class="form-label fw-bold">Item Name:</label>
                     <input type="text" class="form-control form-control-sm" name="item_name" id="item_name" placeholder="e.g. Bondpaper, Ballpen">
@@ -94,6 +103,7 @@ $(document).ready(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
 
     //load table
     let table = $('.data-table').DataTable({

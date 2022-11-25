@@ -76,12 +76,14 @@
       //add function
   $('#savedata').click(function (e) {
     e.preventDefault();
-    $.ajax({
-        data: $('#requestForm').serialize(),
-        url : "{{ route('store-requisition') }}",
-        type: "POST",
-        dataType: "json",
+    if (confirm("Please review your requisition quantities. Click ok to proceed?") === true) {
+        $.ajax({
+            data: $('#requestForm').serialize(),
+            url : "{{ route('store-requisition') }}",
+            type: "POST",
+            dataType: "json",
             success: function (data) {
+                console.log(data.message);
                 $('#requestForm').trigger("reset");
                 toastr.success('Requsition submitted successfully.','Success');
                 $('#status').attr('hidden', false);
@@ -97,6 +99,7 @@
                 toastr.error(data['responseJSON'][data.message],'Error has occured');
             }
         });
+    }
 });
 
     $('#select_inventory').on('change', function(){

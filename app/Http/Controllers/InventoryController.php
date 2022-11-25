@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,7 @@ class InventoryController extends Controller
      */
     public function index(Request $request)
     {
+        $categories = Category::all();
         $inventory = [];
         if($request->ajax()){
             $inventory = DB::table('inventories as i')
@@ -30,6 +32,7 @@ class InventoryController extends Controller
                                     'c.title', 
                                     DB::raw('DATE_FORMAT(i.date_acquired, \'%M %d, %Y\') as date_acquired')
                                     )
+                                ->orderBy('created_at', 'desc')
                                 ->get();
             return DataTables::of($inventory)
                     ->addIndexColumn()
@@ -41,7 +44,7 @@ class InventoryController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('admin.inventories', compact('inventory'));
+        return view('admin.inventories', compact('inventory', 'categories'));
     }
 
     public function vpIndex(Request $request)
@@ -55,6 +58,7 @@ class InventoryController extends Controller
                                 'c.title', 
                                 DB::raw('DATE_FORMAT(i.date_acquired, \'%M %d, %Y\') as date_acquired')
                                 )
+                            ->orderBy('created_at', 'desc')
                             ->get();
             return DataTables::of($inventory)
                     ->addIndexColumn()
@@ -74,6 +78,7 @@ class InventoryController extends Controller
                                 'c.title', 
                                 DB::raw('DATE_FORMAT(i.date_acquired, \'%M %d, %Y\') as date_acquired')
                                 )
+                            ->orderBy('created_at', 'desc')
                             ->get();
             return DataTables::of($inventory)
                     ->addIndexColumn()
@@ -101,6 +106,7 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'category' => 'required',
             'item_name' => 'required|string',
             'description' => 'required|string',
             'quantity' => 'required',
@@ -114,6 +120,7 @@ class InventoryController extends Controller
             'quantity' => $request->quantity,
             'quantity_type' => $request->quantity_type,
             'date_acquired' => $request->date_acquired,
+            'category_id' => $request->category,
         ]);
 
         return response()->json(['success'=> 'Item added successfully.']);

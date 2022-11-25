@@ -25,6 +25,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap5.css"/>
     {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"/> --}}
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     
 
 
@@ -44,6 +46,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('js/button.print.js') }}"></script>
     {{-- <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script> --}}
 
@@ -110,6 +114,13 @@
                                     <i class="bi-file-earmark-text-fill sidebar-requisition"></i> <span class="ms-1 d-none d-sm-inline sidebar-requisition">Requisitions</span>
                                 </a>
                             </li>
+                                                        
+                            <li class="nav-item" id="return_items">
+                                <a href="{{ route('return.items') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
+                                    <i class="bi-arrow-return-right sidebar-return-item"></i> <span class="ms-1 d-none d-sm-inline sidebar-return-item">Return Items</span>
+                                </a>
+                            </li>
+
 
                             <li class="nav-item" id="reports">
                                 <a href="{{ route('reports') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
@@ -137,6 +148,13 @@
                             </a>
                         </li>
 
+
+                        <li class="nav-item" id="return_items">
+                            <a href="{{ route('return.items') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
+                                <i class="bi-arrow-return-right sidebar-return-item"></i> <span class="ms-1 d-none d-sm-inline sidebar-return-item">Return Items</span>
+                            </a>
+                        </li>
+
                         <li class="nav-item" id="reports">
                             <a href="{{ route('reports') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
                                 <i class="bi-printer-fill admin-report"></i> <span class="ms-1 d-none d-sm-inline admin-report">Reports</span>
@@ -159,6 +177,12 @@
                         <li class="nav-item" id="requisitions">
                             <a href="{{ route('president.requisition') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
                                 <i class="bi-file-earmark-text-fill sidebar-requisition"></i> <span class="ms-1 d-none d-sm-inline sidebar-requisition">Requisitions</span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item" id="return_items">
+                            <a href="{{ route('return.items') }}" class="nav-link align-middle fs-5 mb-1 text-white px-3 sidebar">
+                                <i class="bi-arrow-return-right sidebar-return-item"></i> <span class="ms-1 d-none d-sm-inline sidebar-return-item">Return Items</span>
                             </a>
                         </li>
 

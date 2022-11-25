@@ -32,6 +32,10 @@
                     <input type="text" id="name" class="form-control" name="name" placeholder="Name" value="{{ old('name', Auth::user()->name) }}">
                 </div>
                 <div class="form-group focused col-md-5 mb-3">
+                    <label class="form-control-label mb-1" for="last_name">Username</label>
+                    <input type="text" id="username" class="form-control" name="username" placeholder="Username" value="{{ old('username', Auth::user()->username) }}">
+                </div>
+                <div class="form-group focused col-md-5 mb-3">
                     <label class="form-control-label mb-1" for="last_name">Email</label>
                     <input type="email" id="email" class="form-control" name="email" placeholder="Email" value="{{ old('email', Auth::user()->email) }}">
                 </div>

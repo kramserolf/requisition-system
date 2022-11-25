@@ -100,19 +100,27 @@ class AdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . Auth::user()->id,
             'current_password' => 'nullable|required_with:new_password',
         ]);
 
         // get image name
         $file = $request->file('image');
-        
-        $imageName = $file->getClientOriginalName();
-        // move the image to folder
-        $request->image->move(public_path('images/'), $imageName);
 
+        if(!empty($file)){
+            $imageName = $file->getClientOriginalName();
+            // move the image to folder
+            $request->image->move(public_path('images/'), $imageName);
+
+            return $imageName;
+        } else {
+            $imageName = 'sjcbi.png';
+        }
+        
         $user = User::findOrFail(Auth::user()->id);
         $user->name = $request->input('name');
+        $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->image = $imageName;
 

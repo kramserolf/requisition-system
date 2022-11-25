@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RequisitionMail;
 use App\Models\Inventory;
 use App\Models\Requisition;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Database\DBAL\TimestampType;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Ui\Presets\React;
 
 class HomeController extends Controller
@@ -46,7 +48,7 @@ class HomeController extends Controller
         $items = explode(',', $request->hidden_item);
         
         $quantity = explode(',', $request->quantity);
-      
+
         for($i = 0; $i < count($items, (int)$quantity); $i++){
             $requisition[] = [
                 'inventory_id' => $items[$i],
@@ -59,9 +61,22 @@ class HomeController extends Controller
             ];
         }
 
-        $requisition = Requisition::insert($requisition);
 
-        return response()->json(['tracking' => $tracking_no, 'message' => $requisition]);
+
+
+
+        $result = Requisition::insert($requisition);
+
+        // $requisitions = DB::table('requisitions as r')
+        //                 ->leftJoin('inventories as i', 'r.inventory_id', 'i.id')
+        //                 ->select('r.name', 'r.department', 'i.item_name', 'i.quantity_type')
+        //                 ->where('status_no', $tracking_no)
+        //                 ->get();
+
+
+        // Mail::to('luffyday3@gmail.com')->send(new RequisitionMail($requisitions));
+
+        return response()->json(['tracking' => $tracking_no, 'message' => $result]);
     }
 
     public function trackStatus(Request $request)

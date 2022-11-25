@@ -128,7 +128,7 @@ $(document).ready(function(){
         var id = $(this).data('id'); 
         $.ajax({
             type: "GET",
-            url: "{{ url('admin/requisition/status') }}",
+            url: '{{ url("admin/requisition/status/'+id'") }}',
             data:{
             id:id
             },
